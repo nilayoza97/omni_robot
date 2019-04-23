@@ -10,6 +10,7 @@ An omni wheeled robot with configuration as shown below is controlled. Three ope
 
 This is the configuration of the wheels and form of the robot.
 
+![](Images/robot_config.png)
 
 ### Installation
 
@@ -24,6 +25,8 @@ $ make
 $ ./omni_control
 ```
 ### Method Explanation
+
+![](omni_bot.png)
 
 1. To find the angle, simply extend the sensor distance lines and form a rectancle with the inclined robot. The triangle formed with the wall gives you the angle Theta.
 
