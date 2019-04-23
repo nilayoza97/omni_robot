@@ -14,15 +14,15 @@ This is the configuration of the wheels and form of the robot.
 ### Installation
 
 Download the folder containing the input, output and source files. Alternately input files can be created using the same format as provided. Choose a local directory in your system and add its path.
-'''
+```
 $ cd /LocalDirectory 
 $ git clone https://github.com/nilayoza97/omni_robot.git
-'''
+```
 ### Compile and Run the program
-'''
+```
 $ make
 $ ./omni_control
-'''
+```
 ### Method Explanation
 
 1. To find the angle, simply extend the sensor distance lines and form a rectancle with the inclined robot. The triangle formed with the wall gives you the angle Theta.
