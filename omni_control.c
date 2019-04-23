@@ -1,6 +1,5 @@
 //Omni robot control
 #include<stdio.h>
-#include<string.h>
 #include<stdlib.h>
 #include<math.h>
 
@@ -16,101 +15,109 @@ double pulsesPerDeg = pulsesPerRotation/360;
 
 void main()
 {
-   float tmp[100], s1[100], s2[100], d;
-    int h=0, t = 0, b = 0, l = 0;
-    FILE *fp, *pf;
-    fp = fopen("input - Sheet1.csv", "r");
-    if (fp == NULL)
+   float sensor1[100], sensor2[100], d;
+   int i =0, t = 0, b = 0;
+   FILE *fp, *pf;
+   
+   fp = fopen("input - Sheet1.csv", "r");
+   if (fp == NULL)
    {
       perror("Error while opening the file.\n");
       exit(EXIT_FAILURE);
    }
+
    while(fscanf(fp,"%f",&d) != EOF)
    {
-      tmp[h] = d;
-      if (h%2 == 0 || h == 0)
+      if (i%2 == 0 || i == 0)
       {
-         s1[t] = tmp[h];
+         sensor1[t] = d;
          t++;
       }
       else
       {
-         s2[b] = tmp[h];
+         sensor2[b] = d;
          b++;
       }
+
       fscanf(fp,",");
-      h++;
+      i++;
    }
    
    pf = fopen("output.csv","w+");
    fprintf(pf,"Angle,M1 ticks,M2 ticks,M3 ticks,M4 ticks,Direction,M1 ticks,M2 ticks,M3 ticks,M4 ticks,Direction\n");
+   
    float angle[100], calc, thetaRad[100], distFromWall[100], travelDist[100];
    float pulseM1[100],pulseM2[100],pulseM3[100],pulseM4[100], m1Pulse[100], m2Pulse[100], m3Pulse[100], m4Pulse[100];
-
-   int a = numOfInputs,i,k = 0;
    char *thetaDir[100] , *motDir[100];
-   for (i = 0; i<a; i++)
+
+   for (i = 0; i<numOfInputs; i++)
    {  
       
       //angle of the robot with the wall
-      if(s1[i] > s2[i]) 
+      if(sensor1[i] > sensor2[i]) 
       {
-         calc = (s1[i] - s2[i])/baseWidth;
+         calc = (sensor1[i] - sensor2[i])/baseWidth;
          *thetaDir = "clockwise";              //angle is counterclockwise, rotate the robot clockwise
       }
-      if(s1[i] < s2[i]) 
+      if(sensor1[i] < sensor2[i]) 
       {
-         calc = (s2[i] - s1[i])/baseWidth;
+         calc = (sensor2[i] - sensor1[i])/baseWidth;
          *thetaDir = "counterclockwise";       //angle is clockwise, rotate the robot counterclockwise
       }
-      if(s1[i] == s2[i])
+      if(sensor1[i] == sensor2[i])
       {
          calc = 0;
          *thetaDir = "-";                 
       }
             
-      thetaRad[k] = (atan(calc));
-      angle[k] = (thetaRad[k]*180)/pi;      
+      thetaRad[i] = (atan(calc));
+      angle[i] = (thetaRad[i]*180)/pi;      
 
       //make the robot parallel to the wall
 
-      pulseM1[k] = (baseWidth*0.5)*thetaRad[k]*pulsesPerCm;    // used s=r*theta
-      pulseM2[k] = (baseWidth*0.5)*thetaRad[k]*pulsesPerCm;
-      pulseM3[k] = (baseWidth*0.5)*thetaRad[k]*pulsesPerCm;
-      pulseM4[k] = (baseWidth*0.5)*thetaRad[k]*pulsesPerCm; 
+      pulseM1[i] = (baseWidth*0.5)*thetaRad[i]*pulsesPerCm;    // used s=r*theta
+      pulseM2[i] = (baseWidth*0.5)*thetaRad[i]*pulsesPerCm;
+      pulseM3[i] = (baseWidth*0.5)*thetaRad[i]*pulsesPerCm;
+      pulseM4[i] = (baseWidth*0.5)*thetaRad[i]*pulsesPerCm; 
 
       //bring it 30cm away from the wall
-      if(s1[i] - s2[i] > 0)
+
+      if(sensor1[i] > sensor2[i])
       {
-         distFromWall[k] = (((s1[i]*cos(angle[k]))- (s2[i]*cos(angle[k])))/2) + (s2[i]*cos(angle[k]));
+         distFromWall[i] = baseWidth*0.5*sin(thetaRad[i]) + sensor2[i]*cos(thetaRad[i]);
       }
-      if(s1[i] - s2[i] < 0)
+      if(sensor1[i] < sensor2[i])
       {
-         distFromWall[k] = (((s2[i]*cos(angle[k])) - (s1[i]*cos(angle[k])))/2) + (s1[i]*cos(angle[k]));
+         distFromWall[i] = baseWidth*0.5*sin(thetaRad[i]) + sensor1[i]*cos(thetaRad[i]);
       }
-      if(distFromWall[k] < targetDist)
+      if(sensor1[i] == sensor2[i])
       {
-         travelDist[k] = targetDist - distFromWall[k];
+         distFromWall[i] = sensor1[i];
+      } 
+
+
+      if(distFromWall[i] < targetDist)
+      {
+         travelDist[i] = targetDist - distFromWall[i];
          *motDir = "counterclockwise";
       }
-      if(distFromWall[k] > targetDist)
+      if(distFromWall[i] > targetDist)
       {
-         travelDist[k] = distFromWall[k] - targetDist;
+         travelDist[i] = distFromWall[i] - targetDist;
          *motDir = "clockwise"; 
       }
-      if(distFromWall[k] == targetDist)
+      if(distFromWall[i] == targetDist)
       {
+         travelDist[i] = 0;
          *motDir = "-";
       }
       
-      m1Pulse[k] = 0;
-      m2Pulse[k] = 0;
-      m3Pulse[k] = travelDist[k]*pulsesPerCm;
-      m4Pulse[k] = travelDist[k]*pulsesPerCm;
+      m1Pulse[i] = 0;
+      m2Pulse[i] = 0;
+      m3Pulse[i] = travelDist[i]*pulsesPerCm;
+      m4Pulse[i] = travelDist[i]*pulsesPerCm;
 
-      fprintf(pf,"%f,%f,%f,%f,%f,%s,%f,%f,%f,%f,%s\n", angle[k], pulseM1[k], pulseM2[k], pulseM3[k], pulseM4[k], *thetaDir, m1Pulse[k], m2Pulse[k], m3Pulse[k], m4Pulse[k], *motDir);
-
-      k++;
+      fprintf(pf,"%f,%f,%f,%f,%f,%s,%f,%f,%f,%f,%s\n", angle[i], pulseM1[i], pulseM2[i], pulseM3[i], pulseM4[i], *thetaDir, m1Pulse[i], m2Pulse[i], m3Pulse[i], m4Pulse[i], *motDir);
    }
 
    fclose(fp);
