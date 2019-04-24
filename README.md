@@ -33,4 +33,5 @@ $ ./omni_control
 2. The robot is made parallel to the wall by connecting all the wheels which form the circle and then finding the length of the arc to be traced by all the wheels in order to cover an angle Theta with the wall.
 
 3. Translating the robot to 30cm from the wall requires the current distance of the robot from the wall, which can be found out by using simple geometry as shown. Then give the pulse command to the side motors (as viewed from the top) so that they cover the required distance to bring the robot 30cm away from the wall. The front and rear motors will act as caster wheels in this operation as there is no need for rotation.
-**Note :** The robot actually rotates from the centre of the body, but for ease of calculation we have considered the top edge as it makes no difference in the vertical distance as the triangle subtending angle Theta with the edge is chosen. However the horizontal distance does change and we cannot calculate it in the same manner.
+
+**Note :** The robot actually rotates from the centre of the body, but for ease of calculation we have considered the top edge as it makes no difference in the vertical distance, because the triangle subtending angle Theta with the edge is chosen. However the horizontal distance does change and we cannot calculate it in the same manner.
