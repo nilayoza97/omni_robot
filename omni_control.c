@@ -84,11 +84,11 @@ void main()
 
       if(sensor1[i] > sensor2[i])
       {
-         distFromWall[i] = baseWidth*0.5*(sin(thetaRad[i])+cos(thetaRad[i]-1) + sensor2[i]*cos(thetaRad[i]);
+         distFromWall[i] = baseWidth*0.5*(sin(thetaRad[i])+cos(thetaRad[i])-1) + sensor2[i]*cos(thetaRad[i]);
       }
       if(sensor1[i] < sensor2[i])
       {
-         distFromWall[i] = baseWidth*0.5*(sin(thetaRad[i])+cos(thetaRad[i]-1) + sensor1[i]*cos(thetaRad[i]);
+         distFromWall[i] = baseWidth*0.5*(sin(thetaRad[i])+cos(thetaRad[i])-1) + sensor1[i]*cos(thetaRad[i]);
       }
       if(sensor1[i] == sensor2[i])
       {
