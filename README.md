@@ -26,7 +26,7 @@ $ ./omni_control
 ```
 ### Method Explanation
 
-![](Images/omni_bot.png)
+![](Images/omni_robot.png)
 
 1. To find the angle, simply extend the sensor distance lines and form a rectancle with the inclined robot. The triangle formed with the wall gives you the angle Theta.
 
