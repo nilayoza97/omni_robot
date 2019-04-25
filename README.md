@@ -34,4 +34,4 @@ $ ./omni_control
 
 3. Translating the robot to 30cm from the wall requires the current distance of the robot from the wall, which can be found out by using simple geometry as shown. Then give the pulse command to the side motors (as viewed from the top) so that they cover the required distance to bring the robot 30cm away from the wall. The front and rear motors will act as caster wheels in this operation as there is no need for rotation.
 
-**Note :** The robot actually rotates from the centre of the body.
+**Note :** The robot rotates from the centre of the body.
