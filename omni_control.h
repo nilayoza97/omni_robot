@@ -2,13 +2,9 @@
 #define BASE_WIDTH 30.0
 #define WHEEL_DIAMETER 5
 #define PULSES_PER_ROTATION 2000
-#define NUM_OF_INPUTS 20
 #define TARGET_DISTANCE 30
 #define SENSOR1 0
 #define SENSOR2 1
-
-double pulsesPerCm = PULSES_PER_ROTATION/(PI*WHEEL_DIAMETER);
-double pulsesPerDeg = PULSES_PER_ROTATION/360;
 
 struct node
 {
@@ -55,4 +51,16 @@ void printList(int i)
         temp = temp->next;
         printf("sensor item %d : %f \n",temp->key, temp->value);
     }
+}
+
+void initialize(int index)
+{
+    head[index] = (struct node *)malloc(sizeof(struct node));
+    head[index]->next = NULL;
+}
+
+void initializeAll()
+{
+    initialize(SENSOR1);
+    initialize(SENSOR2);
 }
