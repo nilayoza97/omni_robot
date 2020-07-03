@@ -17,7 +17,7 @@ void main()
     int i = 0;
     FILE *fp1, *fp2;
 
-    fp1 = fopen("input - Sheet1.csv", "r");
+    fp1 = fopen("IO/input - Sheet1.csv", "r");
     if (fp1 == NULL)
     {
         perror("Error while opening the file.\n");
@@ -44,7 +44,7 @@ void main()
     }
     fclose(fp1);
 
-    fp2 = fopen("output.csv","w+");
+    fp2 = fopen("IO/output.csv","w+");
     if (fp2 == NULL)
     {
         perror("Error while opening the file.\n");
