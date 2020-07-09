@@ -12,18 +12,6 @@ This is the configuration of the wheels and form of the robot.
 
 ![](Images/robot_config.png)
 
-### Installation
-
-Download the folder containing the input, output and source files. Alternately input files can be created using the same format as provided. Choose a local directory in your system and add its path.
-```
-$ cd /LocalDirectory 
-$ git clone https://github.com/nilayoza97/omni_robot.git
-```
-### Compile and Run
-```
-$ make
-$ ./omni_control
-```
 ### Method Explanation
 
 ![](Images/omni_robot.png)
